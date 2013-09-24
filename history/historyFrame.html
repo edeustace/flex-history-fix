@@ -1,0 +1,50 @@
+<html>
+<head>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<script type="text/javascript" language="javascript"
+	src="../js/domain.js"></script>
+</head>
+<body onload="notifyParent()">
+<script>
+
+	function notifyParent()
+	{
+		parent.BrowserHistory.iframeHasLoaded();
+	}
+		
+	function log(message) {
+		if (typeof (console) != "undefined") {
+			console.info(message);
+			return;
+		}
+		alert(message);
+	}
+
+	function processUrl() {
+
+		if (parent._ie_firstload) {
+			parent._ie_firstload = false;
+			return;
+		}
+
+		//log("[processUrl]");
+
+		var pos = url.indexOf("?");
+		url = pos != -1 ? url.substr(pos + 1) : "";
+
+		parent.BrowserHistory.setBrowserURL(url);
+		try {
+			parent.BrowserHistory.browserURLChange(url);
+		} catch (e) {
+			//log(e);
+		}
+	}
+
+	var url = document.location.href;
+	processUrl();
+	document.write(encodeURIComponent(url));
+</script>
+Hidden frame for Browser History support.
+</body>
+</html>
